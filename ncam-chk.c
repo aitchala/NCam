@@ -1065,29 +1065,30 @@ int8_t is_halfCW_er(ECM_REQUEST *er)
  **/
 int8_t chk_halfCW(ECM_REQUEST *er, uchar *cw)
 {
-  if(is_halfCW_er(er) && cw){
+  if(is_halfCW_er(er) && er->cw && er->rc < E_NOTFOUND)
+  {
+		uchar cw15 = cw[15];
+		if(get_odd_even(er) == 0x80 && cw[15] == 0xF0) { cw[15] = 0; }
 
-	 int8_t part1 = checkCWpart(cw, 0);
-	 int8_t part2 = checkCWpart(cw, 1);
+		int8_t part1 = checkCWpart(cw, 0);
+		int8_t part2 = checkCWpart(cw, 1);
+        char tmp[16*3+1];
+        cs_log("er->caid=%04X, cw=%s", er->caid, cs_hexdump(1, cw, 16, tmp, sizeof(tmp)));
+		
 
-	 //check for correct half cw format
-	 if(part1 && part2){
-		 return 0;
-	 }
+		//check for correct half cw format
+		if(part1 && part2){ cw[15] = cw15; return 0; }
 
-	 //check for correct cw position
-	 if(
-	    (get_odd_even(er) == 0x80 && part1 && !part2)   //xxxxxxxx00000000
+		//check for correct cw position
+		if(
+		(get_odd_even(er) == 0x80 && part1 && !part2)   //xxxxxxxx00000000
 		||
 		(get_odd_even(er) == 0x81 && !part1 && part2)   //00000000xxxxxxxx
-	 )
-	 {
-		return 1;
-	 }
-
-	 return 0;  //not correct swapped cw
-
-  }else
+		)
+		{ return 1; }
+		cw[15] = cw15;
+		return 0;  //not correct swapped cw
+	}else
 	return 1;
 }
 
