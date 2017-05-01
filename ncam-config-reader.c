@@ -463,6 +463,7 @@ void ftab_fn(const char *token, char *value, void *setting, long ftab_type, FILE
 		if(ftab_type & FTAB_CHID)       { rdr = container_of(setting, struct s_reader, fchid); }
 		if(ftab_type & FTAB_FBPCAID)    { rdr = container_of(setting, struct s_reader, fallback_percaid); }
 		if(ftab_type & FTAB_LOCALCARDS) { rdr = container_of(setting, struct s_reader, localcards); }
+		if(ftab_type & FTAB_IGNCHKSMCAID){ rdr = container_of(setting, struct s_reader, disablecrccws); }
 #ifdef WITH_EMU
 		if(ftab_type & FTAB_EMUAU)      { rdr = container_of(setting, struct s_reader, emu_auproviders); }
 #endif
