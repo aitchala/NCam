@@ -505,19 +505,10 @@ const char *reader_get_type_desc(struct s_reader *rdr)
 	if(rdr->typ == R_NEWCAMD && rdr->ncd_proto == NCD_524)
 		{ desc = "newcamd524"; }
 	else if (rdr->typ == R_CCCAM)
-	//else if(rdr->typ == R_CCCAM && cccam_client_multics_mode(rdr->client) && cccam_client_newbox_mode(rdr->client))
-	{
-//		desc = "cccam";
-//		if(extended && cccam_client_extended_mode(rdr->client)) desc = "cccam_ext";
-		if (cccam_client_multics_mode(rdr->client) && cccam_client_newbox_mode(rdr->client))
-			desc = "cccam";
-		else
-		{
-			if (cccam_client_extended_mode(rdr->client))
-				desc = "cccam_ext";
-			else
-				desc = "cccam";
-		}
+	desc = "cccam";
+        if(extended && cccam_client_extended_mode(rdr->client)) desc = "cccam_ext";
+        if(cccam_client_multics_mode(rdr->client)) desc = "cccam_ext";
+        else if(cccam_client_multics_mode(rdr->client)) desc = "cccam_msc";
 	}
 	return desc;
 }
