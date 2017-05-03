@@ -508,6 +508,8 @@ const char *reader_get_type_desc(struct s_reader *rdr, int32_t extended)
         if(extended && cccam_client_extended_mode(rdr->client)) desc = "cccam_ext";
         if(cccam_client_multics_mode(rdr->client)) desc = "cccam_ext";
         else if(cccam_client_multics_mode(rdr->client)) desc = "cccam_msc";
+	}
+	return desc;
 }
 
 bool hexserialset(struct s_reader *rdr)
